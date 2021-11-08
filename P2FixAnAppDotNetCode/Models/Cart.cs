@@ -13,13 +13,15 @@ namespace P2FixAnAppDotNetCode.Models
         /// </summary>
         public IEnumerable<CartLine> Lines => GetCartLineList();
 
+        //private Dictionary<int,CartLine> dictio_cartline = new Dictionary<int,CartLine>();
+        private List<CartLine> list_cartline = new List<CartLine>();
         /// <summary>
         /// Return the actual cartline list
         /// </summary>
         /// <returns></returns>
         private List<CartLine> GetCartLineList()
         {
-            return new List<CartLine>();
+            return list_cartline;
         }
 
         /// <summary>
@@ -27,22 +29,23 @@ namespace P2FixAnAppDotNetCode.Models
         /// </summary>//
         public void AddItem(Product product, int quantity)
         {
-            // TODO implement the method
+            list_cartline.Add(new CartLine(list_cartline.Count, product, quantity));
         }
 
         /// <summary>
         /// Removes a product form the cart
         /// </summary>
         public void RemoveLine(Product product) =>
-            GetCartLineList().RemoveAll(l => l.Product.Id == product.Id);
+                GetCartLineList().RemoveAll(l => l.Product.Id == product.Id);
 
         /// <summary>
         /// Get total value of a cart
         /// </summary>
         public double GetTotalValue()
         {
-            // TODO implement the method
-            return 0.0;
+            double total = 0;
+            list_cartline.ForEach(x => total += x.Product.Price);
+            return total;
         }
 
         /// <summary>
@@ -50,8 +53,9 @@ namespace P2FixAnAppDotNetCode.Models
         /// </summary>
         public double GetAverageValue()
         {
-            // TODO implement the method
-            return 0.0;
+            double average = 0;
+            list_cartline.ForEach(x => average += x.Product.Price);
+            return average / list_cartline.Count;
         }
 
         /// <summary>
@@ -59,7 +63,15 @@ namespace P2FixAnAppDotNetCode.Models
         /// </summary>
         public Product FindProductInCartLines(int productId)
         {
-            // TODO implement the method
+            foreach (CartLine element in Lines)
+            {
+                if (element.Product.Id == productId)
+                {
+                    return element.Product;
+                }
+            }
+
+            //return new Product();
             return null;
         }
 
@@ -74,17 +86,27 @@ namespace P2FixAnAppDotNetCode.Models
         /// <summary>
         /// Clears a the cart of all added products
         /// </summary>
-        public void Clear()
-        {
-            List<CartLine> cartLines = GetCartLineList();
-            cartLines.Clear();
-        }
+        //public void Clear()
+        //{
+        //    List<CartLine> cartLines = GetCartLineList();
+        //    cartLines.Clear();
+        //}
+
+        public void Clear() => GetCartLineList().Clear();
+        //list_cartline.Clear();
     }
 
     public class CartLine
     {
-        public int OrderLineId { get; set; }
-        public Product Product { get; set; }
-        public int Quantity { get; set; }
+        public int OrderLineId = new int();
+        public Product Product;
+        public int Quantity = new int();
+
+        public CartLine(int line_id, Product product_new, int quantity_new)
+        {
+            OrderLineId = line_id;
+            Product = product_new;
+            Quantity = quantity_new;
+        }
     }
 }
