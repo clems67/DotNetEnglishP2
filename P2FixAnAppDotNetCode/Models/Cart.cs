@@ -36,7 +36,7 @@ namespace P2FixAnAppDotNetCode.Models
                 {
                     already_exist = true;
                     item.Quantity += 1;
-                    return;
+                    break;
                 }
             }
             if (already_exist == false)

@@ -21,11 +21,12 @@ namespace P2FixAnAppDotNetCode.Models.Services
         /// <summary>
         /// Get all product from the inventory
         /// </summary>
-        public List<Product> GetAllProducts()
+        public Product[] GetAllProducts()
         {
             // TODO change the return type from array to List<T> and propagate the change
             // thoughout the application
-            return _productRepository.GetAllProducts();
+            var temp = _productRepository.GetAllProducts();
+            return temp.ToArray();
         }
 
         /// <summary>
