@@ -29,7 +29,20 @@ namespace P2FixAnAppDotNetCode.Models
         /// </summary>//
         public void AddItem(Product product, int quantity)
         {
-            list_cartline.Add(new CartLine(list_cartline.Count, product, quantity));
+            bool already_exist = false;
+            foreach (CartLine item in list_cartline)
+            {
+                if (item.Product.Name == product.Name)
+                {
+                    already_exist = true;
+                    item.Quantity += 1;
+                    return;
+                }
+            }
+            if (already_exist == false)
+            {
+                list_cartline.Add(new CartLine(list_cartline.Count + 1, product, quantity));
+            }
         }
 
         /// <summary>
@@ -44,7 +57,7 @@ namespace P2FixAnAppDotNetCode.Models
         public double GetTotalValue()
         {
             double total = 0;
-            list_cartline.ForEach(x => total += x.Product.Price);
+            list_cartline.ForEach(x => total += x.Product.Price * x.Quantity);
             return total;
         }
 
@@ -53,9 +66,11 @@ namespace P2FixAnAppDotNetCode.Models
         /// </summary>
         public double GetAverageValue()
         {
-            double average = 0;
-            list_cartline.ForEach(x => average += x.Product.Price);
-            return average / list_cartline.Count;
+            double sum = 0;
+            int count = 0;
+            list_cartline.ForEach(x => sum += x.Product.Price * x.Quantity);
+            list_cartline.ForEach(x => count += x.Quantity);
+            return sum / count;
         }
 
         /// <summary>
