@@ -10,7 +10,7 @@ namespace P2FixAnAppDotNetCode.Models.Services
     {
         private readonly IProductRepository _productRepository;
         private readonly IOrderRepository _orderRepository;
-        
+
 
         public ProductService(IProductRepository productRepository, IOrderRepository orderRepository)
         {
@@ -25,8 +25,7 @@ namespace P2FixAnAppDotNetCode.Models.Services
         {
             // TODO change the return type from array to List<T> and propagate the change
             // thoughout the application
-            var temp = _productRepository.GetAllProducts();
-            return temp.ToArray();
+            return _productRepository.GetAllProducts().ToArray();
         }
 
         /// <summary>
@@ -53,6 +52,10 @@ namespace P2FixAnAppDotNetCode.Models.Services
         {
             // TODO implement the method
             // update product inventory by using _productRepository.UpdateProductStocks() method.
+            foreach (CartLine cart_line in cart.Lines)
+            {
+                _productRepository.UpdateProductStocks(cart_line.Product.Id, cart_line.Quantity);
+            }
         }
     }
 }
