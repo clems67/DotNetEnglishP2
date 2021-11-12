@@ -33,8 +33,7 @@ namespace P2FixAnAppDotNetCode.Models.Services
         /// </summary>
         public Product GetProductById(int id)
         {
-            List<Product> temp_list = _productRepository.GetAllProducts();
-            foreach (Product element in temp_list)
+            foreach (Product element in _productRepository.GetAllProducts())
             {
                 if (element.Id == id)
                 {

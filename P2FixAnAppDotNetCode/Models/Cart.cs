@@ -14,14 +14,14 @@ namespace P2FixAnAppDotNetCode.Models
         public IEnumerable<CartLine> Lines => GetCartLineList();
 
         //private Dictionary<int,CartLine> dictio_cartline = new Dictionary<int,CartLine>();
-        private List<CartLine> list_cartline = new List<CartLine>();
+        private List<CartLine> listCartLine = new List<CartLine>(); // listCartLine
         /// <summary>
         /// Return the actual cartline list
         /// </summary>
         /// <returns></returns>
         private List<CartLine> GetCartLineList()
         {
-            return list_cartline;
+            return listCartLine;
         }
 
         /// <summary>
@@ -30,18 +30,19 @@ namespace P2FixAnAppDotNetCode.Models
         public void AddItem(Product product, int quantity)
         {
             bool already_exist = false;
-            foreach (CartLine item in list_cartline)
+            foreach (CartLine item in listCartLine)
             {
-                if (item.Product.Name == product.Name)
+                if (item.Product.Name == product.Name) //if product already exists in cart => update quantity
                 {
                     already_exist = true;
                     item.Quantity += 1;
                     break;
                 }
             }
-            if (already_exist == false)
+
+            if (!already_exist) //if not add it to the cart
             {
-                list_cartline.Add(new CartLine(list_cartline.Count + 1, product, quantity));
+                listCartLine.Add(new CartLine(listCartLine.Count + 1, product, quantity));
             }
         }
 
@@ -57,7 +58,7 @@ namespace P2FixAnAppDotNetCode.Models
         public double GetTotalValue()
         {
             double total = 0;
-            list_cartline.ForEach(x => total += x.Product.Price * x.Quantity);
+            listCartLine.ForEach(x => total += x.Product.Price * x.Quantity);
             return total;
         }
 
@@ -68,8 +69,8 @@ namespace P2FixAnAppDotNetCode.Models
         {
             double sum = 0;
             int count = 0;
-            list_cartline.ForEach(x => sum += x.Product.Price * x.Quantity);
-            list_cartline.ForEach(x => count += x.Quantity);
+            listCartLine.ForEach(x => sum += x.Product.Price * x.Quantity);
+            listCartLine.ForEach(x => count += x.Quantity);
             return sum / count;
         }
 
@@ -78,16 +79,7 @@ namespace P2FixAnAppDotNetCode.Models
         /// </summary>
         public Product FindProductInCartLines(int productId)
         {
-            foreach (CartLine element in Lines)
-            {
-                if (element.Product.Id == productId)
-                {
-                    return element.Product;
-                }
-            }
-
-            //return new Product();
-            return null;
+            return Lines.FirstOrDefault(line => line.Product.Id == productId)?.Product;
         }
 
         /// <summary>
@@ -108,7 +100,7 @@ namespace P2FixAnAppDotNetCode.Models
         //}
 
         public void Clear() => GetCartLineList().Clear();
-        //list_cartline.Clear();
+        //listCartLine.Clear();
     }
 
     public class CartLine
