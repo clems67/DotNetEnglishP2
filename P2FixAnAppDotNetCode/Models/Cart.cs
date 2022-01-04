@@ -35,7 +35,7 @@ namespace P2FixAnAppDotNetCode.Models
                 if (item.Product.Name == product.Name) //if product already exists in cart => update quantity
                 {
                     already_exist = true;
-                    item.Quantity += 1;
+                    item.Quantity += quantity;
                     break;
                 }
             }
@@ -67,11 +67,9 @@ namespace P2FixAnAppDotNetCode.Models
         /// </summary>
         public double GetAverageValue()
         {
-            double sum = 0;
             int count = 0;
-            listCartLine.ForEach(x => sum += x.Product.Price * x.Quantity);
             listCartLine.ForEach(x => count += x.Quantity);
-            return sum / count;
+            return GetTotalValue() / count;
         }
 
         /// <summary>
@@ -105,15 +103,15 @@ namespace P2FixAnAppDotNetCode.Models
 
     public class CartLine
     {
-        public int OrderLineId = new int();
-        public Product Product;
-        public int Quantity = new int();
+        public int OrderLineId { get; set; }
+        public Product Product { get; set; }
+        public int Quantity { get; set; }
 
-        public CartLine(int line_id, Product product_new, int quantity_new)
+        public CartLine(int LineId, Product ProductNew, int QuantityNew)
         {
-            OrderLineId = line_id;
-            Product = product_new;
-            Quantity = quantity_new;
+            OrderLineId = LineId;
+            Product = ProductNew;
+            Quantity = QuantityNew;
         }
     }
 }
