@@ -29,18 +29,18 @@ namespace P2FixAnAppDotNetCode.Models
         /// </summary>//
         public void AddItem(Product product, int quantity)
         {
-            bool already_exist = false;
+            bool alreadyExist = false;
             foreach (CartLine item in listCartLine)
             {
                 if (item.Product.Name == product.Name) //if product already exists in cart => update quantity
                 {
-                    already_exist = true;
+                    alreadyExist = true;
                     item.Quantity += quantity;
                     break;
                 }
             }
 
-            if (!already_exist) //if not add it to the cart
+            if (!alreadyExist) //if not add it to the cart
             {
                 listCartLine.Add(new CartLine(listCartLine.Count + 1, product, quantity));
             }
@@ -107,11 +107,11 @@ namespace P2FixAnAppDotNetCode.Models
         public Product Product { get; set; }
         public int Quantity { get; set; }
 
-        public CartLine(int LineId, Product ProductNew, int QuantityNew)
+        public CartLine(int lineId, Product productNew, int quantityNew)
         {
-            OrderLineId = LineId;
-            Product = ProductNew;
-            Quantity = QuantityNew;
+            OrderLineId = lineId;
+            Product = productNew;
+            Quantity = quantityNew;
         }
     }
 }
